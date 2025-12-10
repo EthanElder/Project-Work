@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import messagebox
 import pickle
 
+customerDictionary = {}
+employeeDictionary = {}
+
 def login():
     open(Inventory)
 
@@ -18,12 +21,15 @@ class Customer:
         self.user_id = input("Enter the user ID: ")
         self.username = input("Enter a username: ")
         self.pword = input("Enter a password: ")
+        customerDictionary[self.user_id] = {"username": self.username, "pword": self.pword}
+        with open('customer_data.pkl', 'wb') as file:
+            pickle.dump(customerDictionary, file)
 
     def customer_login(self):
         cust_uname = input("Enter your username: ")
         if cust_uname in self.username:
             pword = input("Enter your password: ")
-            if pword match(self.username, self.pword):
+            if pword == self.pword[cust_uname]:
                 login()
 
 class Employee:
@@ -33,7 +39,6 @@ class Employee:
         self.employee_name = ""
         self.position = ""
         self.rate = 0.00
-        self.time_worked = 0.0
 
     def add_employee(self):
         self.employee_id = input("Enter the employee ID: ")
@@ -41,18 +46,23 @@ class Employee:
         self.employee_name = input("Enter employee name: ")
         self.position = input("Enter position: ")
         self.rate = float(input("Enter rate: "))
+        employeeDictionary[self.employee_name] = {"employee_id": self.employee_id, "employee_password": self.employee_password, "rate": self.rate}
+        with open('employee_data.pkl', 'wb') as file:
+            pickle.dump(employeeDictionary, file)
 
     def employee_login(self):
         emp_id = input("Enter your ID: ")
         if emp_id in self.employee_id:
             password = input("Enter your password: ")
-            if password match(self.employee_id, self.employee_password):
+            if password == self.employee_password[emp_id]:
                 employee_login()
 
     def employee_clockout(self):
         x = input("Enter the employee ID for who is clocking in: ")
         if x in self.employee_id:
-        self.time_worked = float(input("Enter the amount of time that you worked: "))
+            time_worked = float(input("Enter the amount of time that you worked: "))
+            payment = time_worked * self.rate
+            print("Payment = ""$"payment)
 
 class Inventory:
     def __init__(self):
@@ -78,7 +88,7 @@ class Employee_Inventory:
         self.amount = int(input("Enter amount: "))
         self.price = float(input("Enter price: "))
 
-class Login_App:
+class Inventory_App:
     def __init__(self, root):
         self.customer = Customer()
         self.employee = Employee()
@@ -128,5 +138,5 @@ class Login_App:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = Login_App(root)
+    app = Inventory_App(root)
     root.mainloop()
